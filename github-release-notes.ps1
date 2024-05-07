@@ -44,6 +44,9 @@ function Main {
     Write-Host "repo: $repo"
     Write-Host "tag: $tag"
 
+    # Call the function to create and push the tag
+    CreateAndPushTag -tag $tag
+
     # Get the latest release
     $releaseNotes = GetLatestRelease -token $token -owner $owner -repo $repo -tag $tag
 
