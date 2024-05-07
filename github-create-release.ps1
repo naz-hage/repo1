@@ -1,7 +1,7 @@
 # Define script parameters
 param (
-    [string]$tag,
-    [string]$repo
+    [string]$repo,
+    [string]$tag        
 )
 
 # Build release notes since a specific release
@@ -75,8 +75,8 @@ function CreateGitHubRelease {
 
 function Main {
     param (
-        [string]$tag,
-        [string]$repo
+        [string]$repo,
+        [string]$tag        
     )
 
     Write-Output "Creating release for tag: $tag"
