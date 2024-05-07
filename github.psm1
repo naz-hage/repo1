@@ -1,4 +1,5 @@
-function Get-LatestReleaseRaw {
+
+function GetLatestReleaseRaw {
     param (
         [string]$token,
         [string]$owner,
@@ -27,7 +28,7 @@ function Get-LatestReleaseRaw {
 }
 
 # Get all commits since the latest release
-function Get-LatestRelease {
+function GetLatestRelease {
     param (
         [string]$token,
         [string]$owner,
@@ -35,7 +36,7 @@ function Get-LatestRelease {
         [string]$tag
     )
 
-    $lastest = Get-LatestReleaseRaw -token $token -owner $owner -repo $repo
+    $lastest = GetLatestReleaseRaw -token $token -owner $owner -repo $repo
 
     # Build release notes since the last published release
     if ($null -eq $lastest) {
@@ -179,4 +180,4 @@ function CreateGitHubRelease {
     }
 }
 
-Export-ModuleMember -Function 'Get-LatestRelease', 'CreateGitHubRelease', 'GeTagFromCommit', 'CreateAndPushTag'
+Export-ModuleMember -Function 'GetLatestRelease', 'CreateGitHubRelease', 'GeTagFromCommit', 'CreateAndPushTag'
