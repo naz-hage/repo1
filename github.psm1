@@ -56,6 +56,7 @@ function GetLatestRelease {
     Write-Host "Uri: $uri"
     # Get commits since the latest release
     $commits = Invoke-RestMethod -Uri $uri -Method Get -Headers $headers
+    Write-Host "Commits: $($commits.count)"
     $sinceTag = GeTagFromCommit -token $token -owner $owner -repo $repo -commitSha $commits[0].sha
 
     # Format the commit messages
