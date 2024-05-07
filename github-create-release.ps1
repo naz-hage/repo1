@@ -35,7 +35,7 @@ function Main {
 
     Write-Output "Creating release $tag for $owner/$repo"
     Write-Output "Release Name: $releaseName"
-    Write-Output "Commit Message: $commitMessage"
+    Write-Output "Release Notes: $releaseNotes"
     Write-Output "Asset Path: $assetPath"
     Write-Output "Asset Name: $assetName"
 

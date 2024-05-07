@@ -4,4 +4,4 @@
 ### New Contributors
 
 
-**Full Changelog**: https://github.com/naz-hage/repo1/compare/...1.0.0
+**Full Changelog**: https://github.com/naz-hage/repo1/compare/...1.3.19
