@@ -18,4 +18,4 @@
 * @naz-hage made their first contribution in https://github.com/naz-hage/repo1/pull/
 
 
-**Full Changelog**: https://github.com/naz-hage/repo1/compare/...1.4.7
+**Full Changelog**: https://github.com/naz-hage/repo1/compare/...1.0.0

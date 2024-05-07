@@ -87,6 +87,8 @@ function Get-LatestRelease {
     # Full Changelog
     $releaseNotes += "`n`n**Full Changelog**: https://github.com/$owner/$repo/compare/$sinceTag...$tag"
 
+
+
     return $releaseNotes
 }
 
@@ -119,6 +121,62 @@ function GeTagFromCommit {
     }
 
     return $tagForCommit
+
+
 }
 
-Export-ModuleMember -Function Get-LatestRelease
+function CreateAndPushTag {
+    param (
+        [string]$tag
+    )
+
+# get current branch
+$branch = git rev-parse --abbrev-ref HEAD
+# create a tag
+git tag $tag
+# push the tag to the remote
+git push origin $branch $tag
+}
+
+function CreateGitHubRelease {
+    param (
+        [string]$token,
+        [string]$owner,
+        [string]$repo,
+        [string]$tag,
+        [string]$releaseName,
+        [string]$commitMessage,
+        [string]$assetPath,
+        [string]$assetName
+    )
+
+    $assetMimeType = "application/octet-stream"
+    $assetContent = [System.IO.File]::ReadAllBytes($assetPath)
+
+    $headers = @{
+        "Authorization" = "token $token"
+        "Accept" = "application/vnd.github.v3+json"
+    }
+
+    $body = @{
+        "tag_name" = $tag
+        "name" = $releaseName
+        "body" = $commitMessage
+        "draft" = $false
+        "prerelease" = $false
+    } | ConvertTo-Json
+
+    $response = Invoke-RestMethod -Uri "https://api.github.com/repos/$owner/$repo/releases" -Method Post -Body $body -Headers $headers
+
+    try {
+        $uploadUrl = $response.upload_url -replace "\{\?name,label\}", "?name=$assetName"
+        Write-Output "Upload URL: $uploadUrl"
+        Invoke-RestMethod -Uri $uploadUrl -Method Post -Body $assetContent -Headers $headers -ContentType $assetMimeType
+    } catch {
+        Write-Output $_.Exception
+        Write-Output "Error: Could not create a release."
+        exit 1
+    }
+}
+
+Export-ModuleMember -Function 'Get-LatestRelease', 'CreateGitHubRelease', 'GeTagFromCommit', 'CreateAndPushTag'
