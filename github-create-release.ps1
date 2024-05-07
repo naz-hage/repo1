@@ -4,6 +4,33 @@ param (
     [string]$tag        
 )
 
+function Get-LatestRelease {
+    param (
+        [string]$token,
+        [string]$owner,
+        [string]$repo
+    )
+
+# Get the latest release
+$headers = @{
+    "Authorization" = "token $token"
+    "Accept" = "application/vnd.github.v3+json"
+}
+
+try {
+    $uri = "https://api.github.com/repos/$owner/$repo/releases/latest"
+    Write-Host "Calling $uri"
+    $latestRelease = Invoke-RestMethod -Uri $uri -Method Get -Headers $headers
+        
+    return $latestRelease
+    }
+    catch {
+        Write-Output $_.Exception
+        Write-Output "Error: Could not get the latest release. Please check the repository and token."
+        exit 1
+    }
+}
+
 # Build release notes since a specific release
 function Get-CommitsSinceRelease {
     param (
@@ -89,6 +116,8 @@ function Main {
     $assetPath = "$artifactPath/$tag.zip"
     $assetName = "$tag.zip"
 
+    # Get the latest release
+    $latestRelease = Get-LatestRelease -token $token -owner $owner -repo $repo
     # Build release notes since the last published release
     $releaseNotes = Get-CommitsSinceRelease -token $token -owner $owner -repo $repo -sinceLastPublished $latestRelease.published_at
 
