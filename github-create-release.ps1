@@ -25,9 +25,9 @@ try {
     return $latestRelease
     }
     catch {
-        Write-Output $_.Exception
-        Write-Output "Error: Could not get the latest release. Please check the repository and token."
-        exit 1
+        Write-Host $_.Exception
+        Write-Host "Error: Could not get the latest release."
+        return $null
     }
 }
 
@@ -118,8 +118,15 @@ function Main {
 
     # Get the latest release
     $latestRelease = Get-LatestRelease -token $token -owner $owner -repo $repo
+
     # Build release notes since the last published release
-    $releaseNotes = Get-CommitsSinceRelease -token $token -owner $owner -repo $repo -sinceLastPublished $latestRelease.published_at
+    if ($null -eq $latestRelease) {
+        $sinceLastPublished = "1970-01-01T00:00:00Z"
+    } else {
+        $sinceLastPublished = $latestRelease.published_at
+    }
+
+    $releaseNotes = Get-CommitsSinceRelease -token $token -owner $owner -repo $repo -sinceLastPublished $sinceLastPublished
 
     $commitMessage = $releaseNotes
     $assetPath = "$artifactPath/$tag.zip"
