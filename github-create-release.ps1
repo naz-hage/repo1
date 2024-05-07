@@ -27,7 +27,7 @@ function Main {
     $assetPath = "$artifactPath/$tag.zip"
     $assetName = "$tag.zip"
 
-    $releaseNotes = Get-LatestRelease -token $token -owner $owner -repo $repo -tag $tag
+    $releaseNotes = GetLatestRelease -token $token -owner $owner -repo $repo -tag $tag
 
 
     $assetPath = "$artifactPath/$tag.zip"

@@ -45,7 +45,7 @@ function Main {
     Write-Host "tag: $tag"
 
     # Get the latest release
-    $releaseNotes = Get-LatestRelease -token $token -owner $owner -repo $repo -tag $tag
+    $releaseNotes = GetLatestRelease -token $token -owner $owner -repo $repo -tag $tag
 
     Write-Output $releaseNotes
 
