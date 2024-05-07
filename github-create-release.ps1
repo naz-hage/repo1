@@ -11,13 +11,13 @@ function Get-LatestRelease {
         [string]$repo
     )
 
-# Get the latest release
-$headers = @{
+    # Get the latest release
+    $headers = @{
     "Authorization" = "token $token"
     "Accept" = "application/vnd.github.v3+json"
-}
+    }
 
-try {
+    try {
     $uri = "https://api.github.com/repos/$owner/$repo/releases/latest"
     Write-Host "Calling $uri"
     $latestRelease = Invoke-RestMethod -Uri $uri -Method Get -Headers $headers
